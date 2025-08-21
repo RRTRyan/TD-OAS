@@ -1,0 +1,15 @@
+openapi: 3.0.3
+info:
+  title: Exo 1 TD OAS
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/
+paths:
+  /ping:
+    get:
+      responses:
+        '200':
+          description: Returns pong
+          content:
+            'text/plain':
+              example: pong
