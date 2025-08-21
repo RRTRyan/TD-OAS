@@ -1,0 +1,59 @@
+openapi: 3.0.3
+info:
+  title: Exo 4 TD OAS
+  version: 1.0.0
+components:
+  schemas:
+    Product:
+      properties:
+        name:
+          type: string
+        expiration_date:
+          type: string
+          format: date
+        price:
+          type: number
+          format: float
+
+  parameters:
+    limitParam:
+      name: limit
+      in: query
+      schema:
+        type: integer
+      required: false
+    queryParam:
+      name: q
+      in: query
+      schema:
+        type: string
+      required: false
+
+paths:
+  /products:
+    get:
+      parameters:
+        - $ref: "#/components/parameters/limitParam"
+        - $ref: "#/components/parameters/queryParam"
+      responses:
+        "200":
+          description: Retourner une liste de Product
+          content:
+            "application/json":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Product"
+
+              examples:
+                empty:
+                  value: []
+                exists:
+                  value:
+                    - name: Potatoes
+                      expiration_date: 2025-09-12T14:30:20Z
+                      price: 30.5
+                    - name: Tomatoes
+                      expiration_date: 2025-09-12T14:32:20Z
+                      price: 10.25
+                    
