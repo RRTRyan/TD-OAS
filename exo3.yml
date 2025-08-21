@@ -1,0 +1,100 @@
+openapi: 3.0.3
+info:
+  title: Exo 3 TD OAS
+  version: 1.0.0
+components:
+  schemas:
+    Task:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        title:
+          type: string
+          example: Faire les courses
+        completed:
+          type: boolean
+          example: false
+    TaskList:
+      type: array
+      items:
+        $ref: "#/components/schemas/Task"
+
+paths:
+  /tasks:
+    get:
+      responses:
+        "200":
+          description: Retourne une liste de Task[].
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/TaskList"
+    post:
+      requestBody:
+        required: true
+        content:
+          "application/json":
+              schema:
+                $ref: "#/components/schemas/TaskList"
+      responses:
+        "201":
+          description: Crée une liste de tâches
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/TaskList"
+    delete:
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/TaskList"
+      responses:
+        "200":
+          description: Supprime une liste de Task
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/TaskList"              
+
+  /tasks/{id}:
+    get:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+            example: 1
+      responses:
+        "200":
+          description: Retourne la tâche portant l’ID fourni
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/Task"
+        "404":
+          description: Tâche non trouvée
+          content:
+            "text/plain":
+              schema:
+                type: string
+                example: Task not found
+    delete:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+            example: 1
+      responses:
+        "200":
+          description: Supprime une tâche
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/Task"
