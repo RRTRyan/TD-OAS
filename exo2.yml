@@ -1,0 +1,44 @@
+openapi: 3.0.3
+info:
+  title: Exo 2 TD OAS
+  version: 1.0.0
+paths:
+  /users:
+    get:
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: number
+            example: 1
+        - name: size
+          in: query
+          schema:
+            type: number
+            example: 20
+      responses:
+        "200":
+          description: Liste des utilisateurs retrouvés
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  name:
+                    type: string
+                  email:
+                    type: string
+                    format: email
+                example: { id: 1, name: Alice, email: alice@example.com }
+        "400":
+          description: Mauvais types de paramètres fournis
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example: { error: Bad types for provided query }
