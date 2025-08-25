@@ -1,0 +1,164 @@
+openapi: 3.0.0
+info:
+  title: Exo 6 TD OAS
+  version: 1.0.0
+paths:
+  /users:
+    post:
+      tags:
+        - Users
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              type: array
+              items:
+                type: object
+                example: { email: test@test.com }
+      responses:
+        "201":
+          description: Liste d'utilisateur créée
+          content:
+            "application/json":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CreateUserProfile"
+
+  /users/{id}:
+    get:
+      tags:
+        - Users
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          description: Retourne les informations sur un utilisateur
+          content:
+            "application/json":
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/CreateUserProfile"
+                  - $ref: "#/components/schemas/PersonalInfo"
+                  - $ref: "#/components/schemas/Address"
+                  - $ref: "#/components/schemas/Preferences"
+        "404":
+          description: Utilisateur non trouvé
+
+  /users/{id}/personalInfo:
+    put:
+      tags:
+        - Users
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/PersonalInfo"
+      responses:
+        "200":
+          description: Informations personnelles mises à jour
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/PersonalInfo"
+
+  /users/{id}/address:
+    put:
+      tags:
+        - Users
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/Address"
+      responses:
+        "200":
+          description: Addresses mises à jour
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/Address"
+
+  /users/{id}/preferences:
+    put:
+      tags:
+        - Users
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/Preferences"
+      responses:
+        "200":
+          description: Préférences mises à jour
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/Preferences"
+
+components:
+  schemas:
+    CreateUserProfile:
+      type: object
+      properties:
+        identifier:
+          type: string
+          format: uuid
+          example: 00112233-4455-6677-8899-aabbccddeeff
+        email:
+          type: string
+          format: email
+          example: test@test.com
+
+    PersonalInfo:
+      type: object
+      properties:
+        first_name:
+          type: string
+          example: John
+        last_name:
+          type: string
+          example: Doe
+        birthdate:
+          type: string
+          format: date
+          example: 2005-03-14
+
+    Address:
+      type: object
+      properties:
+        address_street:
+          type: string
+          example: 56 Avenue des Champs-Élysées
+        address_city:
+          type: string
+          example: Paris
+        address_country:
+          type: string
+          example: France
+        address_postal_code:
+          type: integer
+          example: 75008
+
+    Preferences:
+      type: object
+      properties:
+        needs_newsletter:
+          type: boolean
+        language:
+          type: string
+          example: mg
+          enum:
+            - fr
+            - mg
+            - eng
+
+  parameters:
+    id:
+      required: true
+      name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+        example: 00112233-4455-6677-8899-aabbccddeeff
